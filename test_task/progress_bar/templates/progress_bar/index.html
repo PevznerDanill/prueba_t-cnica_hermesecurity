@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Progress Bar</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Progress Bar Example</h1>
+    <button id="start-task-btn">Start Task</button>
+
+    <div id="progress-bar" style="width: 100%; background-color: #ddd; margin-top: 20px;">
+        <div id="progress" style="width: 0; height: 30px; background-color: #4caf50;"></div>
+    </div>
+    <h2 id="result-message"></h2>
+
+    <script>
+        $(document).ready(function() {
+            const progressBar = document.getElementById('progress');
+            const resultMessage = document.getElementById('result-message');
+
+            // WebSocket connection to receive progress updates
+            const socket = new WebSocket('ws://' + window.location.host + '/ws/progress/');
+
+            function updateProgressBar(data) {
+                let progressPercentage = "0";
+                if (data) {
+                    const progress = data['progress'];
+                    progressPercentage = progress + '%';
+                }
+                progressBar.style.width = progressPercentage;
+                resultMessage.textContent = progressPercentage;
+            }
+            socket.onmessage = function(e) {
+                const data = JSON.parse(e.data);
+                updateProgressBar(data);
+            };
+
+            $('#start-task-btn').click(function() {
+                $.ajax({
+                    url: '{% url "start_task" %}',
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    success: function(response) {
+                        updateProgressBar();
+                        console.log('Task started: ', response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error starting task:', error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
