@@ -20,16 +20,8 @@ $(document).ready(function() {
                 'X-CSRFToken': csrfToken,
             },
             success: function(response) {
-                const taskId = response.task_id;
-                $('#progress-container').append(`
-                    <div id="task-${taskId}">
-                        <h2>Task ${taskId}</h2>
-                        <div id="progress-bar-${taskId}" style="width: 100%; background-color: #ddd; margin-top: 20px;">
-                            <div id="progress-${taskId}" style="width: 0; height: 30px; background-color: #4caf50;"></div>
-                        </div>
-                        <h2 id="result-${taskId}"></h2>
-                    </div>
-                `);
+                const progressBarHtml = response.progress_bar_template;
+                $('#progress-container').append(progressBarHtml);
             },
             error: function(xhr, status, error) {
                 console.error('Error starting task:', error);

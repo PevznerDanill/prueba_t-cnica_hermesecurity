@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .tasks import long_running_task
 from django.http import JsonResponse, HttpResponse, HttpRequest
 import uuid
+from django.template.loader import render_to_string
 
 def index(request: HttpRequest) -> HttpResponse:
     """
@@ -18,6 +19,14 @@ def start_task(request: HttpRequest) -> JsonResponse:
     if request.method == 'POST':
         task_id = str(uuid.uuid4())
         long_running_task.apply_async(kwargs={'task_id': task_id})
-        return JsonResponse({"status": "Task started successfully", "task_id": task_id})
+        progress_bar_template = render_to_string(
+            'progress_bar/progress_bar_template.html',
+            {'task_id': task_id}
+        )
+        return JsonResponse({
+            "status": "Task started successfully",
+            "task_id": task_id,
+            "progress_bar_template": progress_bar_template
+        })
     else:
         return JsonResponse({"error": "Invalid request method"}, status=400)
