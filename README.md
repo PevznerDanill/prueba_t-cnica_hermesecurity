@@ -6,6 +6,8 @@ Escribe una vista en Django que maneje una tarea de larga duración de forma as�
 
 ### Solución:
 
+![](progress_bar_example.gif)
+
 Para resolver la tarea creé un proyecto test_task. Puede ser lanzado con Docker:
 
 ```shell
