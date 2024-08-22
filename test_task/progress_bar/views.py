@@ -13,7 +13,7 @@ def start_task(request: HttpRequest) -> JsonResponse:
     """
     La vista que acepta solo POST, para iniciar una nueva tarea.
     Primero se genera task_id, y luego este es usado para la tarea de Celery long_running_task.
-    Después devuelve JsonResponse con el estatus y task_id
+    Después devuelve JsonResponse con el estatus y task_id.
     """
     if request.method == 'POST':
         task_id = str(uuid.uuid4())
