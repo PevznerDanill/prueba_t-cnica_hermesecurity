@@ -1,6 +1,7 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 
+
 class ProgressBarConsumer(AsyncWebsocketConsumer):
     """
     Un Consumer para un nuevo progress_bar
