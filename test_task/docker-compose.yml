@@ -27,7 +27,7 @@ services:
   celery:
     build:
       context: .
-      dockerfile: Dockerfile.celery
+      dockerfile: Dockerfile
     command: celery -A test_task worker -l info
     env_file:
       - .env

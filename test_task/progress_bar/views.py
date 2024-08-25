@@ -18,7 +18,7 @@ def start_task(request: HttpRequest) -> JsonResponse:
     """
     if request.method == 'POST':
         task_id = str(uuid.uuid4())
-        long_running_task.apply_async(kwargs={'task_id': task_id})
+        long_running_task.delay(task_id)
         progress_bar_template = render_to_string(
             'progress_bar/progress_bar_template.html',
             {'task_id': task_id}
